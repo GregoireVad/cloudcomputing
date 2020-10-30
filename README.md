@@ -1,3 +1,5 @@
+Binôme : Grégoire VADANCOURT et Thibaut CUSSIGH
+
 Choix de la BDD:  Mongo DB Atlas : 
     - gratuit en dessous de 512GB de stockage
     - Choix de la solution "Dedicated Clusters" pour un stockage moins limité et des développement plus avancé (5)
