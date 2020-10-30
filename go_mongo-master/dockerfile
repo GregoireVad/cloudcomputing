@@ -1,0 +1,31 @@
+# User official Node.js Docker image
+FROM node:6.10.1
+
+#Answer 'yes' to each question
+ENV DEBIAN_FRONTEND noninteractive
+
+# Upgrade the debian packages
+RUN (apt-get update && apt-get upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
+
+#The official image comes with npm; so we can use it to install some packages
+RUN npm install -g grunt-cli gulp-cli bower
+
+# Install fontforge for our specific need
+RUN apt-get install -y fontforge
+
+# Install packages and compile ttfautohint (still for our specific need)
+RUN apt-get install -y libharfbuzz-dev libfreetype6-dev libqt4-dev\
+    && cd /tmp \
+    && curl -L http://download.savannah.gnu.org/releases/freetype/ttfautohint-1.6.tar.gz |tar xz\
+    && cd ttfautohint-1.6\
+    && ./configure\
+    && make\
+    && make install
+
+# Change user. If you do not specify this command, the user will be root, and in our case,
+# Bower will shout as it cannot be launched by root
+USER node
+
+# Specify a working directory on which the current user has write access
+# Remember, a curl command will be, first, executed to download the worker
+WORKDIR /home/node
